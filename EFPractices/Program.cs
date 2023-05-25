@@ -57,7 +57,7 @@ public class Program
         using (var db = new AppContext())
         {
             //Получать список книг определенного жанра и вышедших между определенными годами
-            var books = db.Books.Where(b => b.Gener == "Роман").Where(y=> y.Year == 1850 - 2020);
+            var books = db.Books.Where(b => b.Gener == "Роман").Where(y=> y.Year == 1850 - 2020).ToList();
             //Получать количество книг определенного автора в библиотеке
             var countbook = db.Books.Where(a => a.Author == "Джоан Роулинг"). Count();
             //Получать количество книг определенного жанра в библиотеке
