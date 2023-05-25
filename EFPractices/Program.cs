@@ -1,4 +1,5 @@
 ﻿using EFPractices;
+using System.Runtime.CompilerServices;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using AppContext = EFPractices.AppContext;
 
@@ -51,6 +52,29 @@ public class Program
             case "2":
                 BookRepository.BookMenu();
                 break;
+        }
+
+        using (var db = new AppContext())
+        {
+            //Получать список книг определенного жанра и вышедших между определенными годами
+            var books = db.Books.Where(b => b.Gener == "Роман").Where(y=> y.Year == 1850 - 2020);
+            //Получать количество книг определенного автора в библиотеке
+            var countbook = db.Books.Where(a => a.Author == "Джоан Роулинг"). Count();
+            //Получать количество книг определенного жанра в библиотеке
+            var bookgenre = db.Books.Where(g=>g.Gener =="Фэнтези").Count();
+            //Получать булевый флаг о том, есть ли книга определенного автора и с определенным названием в библиотеке
+            var trueBook = db.Books.All(t=>t.Author == "Л.Н Толстой" == (true));
+            //Получать булевый флаг о том, есть ли определенная книга на руках у пользователя
+            var trueUser = db.Users.All(t => t.Name == "Зелёная лампа" ==(true));
+            //Получать количество книг на руках у пользователя
+            var joinedUserBook = db.Users.Join(db.Books, b => b.Id, u => u.Id, (b, u) => new { BookUser = u.Id });
+            //Получение последней вышедшей книги
+            var yearBook = db.Books.Max(b => b.Year == 2020);
+            //Получение списка всех книг, отсортированного в алфавитном порядке по названию
+            var listBook = db.Books.OrderBy(b => b.Name).ToList();
+            //Получение списка всех книг, отсортированного в порядке убывания года их выхода
+            var listBookYear = db.Books.OrderByDescending(b => b.Year).ToList();
+
         }
 
     }
